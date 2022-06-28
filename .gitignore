@@ -1,0 +1,18 @@
+**/.DS_Store
+node_modules/
+notes/
+archive/
+keys.js
+*.zip
+*.mov
+*.mp4
+*.mp3
+*.wav
+*.pdf
+*.webm
+*.png
+!/*png
+scratchFiles/
+temp/
+# Local Netlify folder
+.netlify
