@@ -17,39 +17,21 @@ const pageinches = 8, margininches = 0.0, pdfdpi = 72;
 const dim = pageinches*pdfdpi, margin = margininches*pdfdpi;
 const diminner = dim-2*margin;
 let quiltrunfile = `quiltrun${timestamp}.js`;
-let quiltrun = { 
-	id: `quiltrun${timestamp}`, datetime: datetimestr, timestamp: timestampnow,
-	pigments: pigments,
-	pigmentsets: pigmentinfo.pigmentsets,
-	pigmentdefs: pigmentdefs,
-	pigmenttypes: pigmentypes,
-	dim, margin,pageinches,margininches,
-	quiltsets: [] 
-}
+let quiltrun = []; 
 
 let nextstepsallfile = `nextsteps${timestamp}.sh`;
 let nextstepsall = "";
 
 [4,5].forEach( nblocks => {
 pigmentinfo.pigmentsets.forEach( (pigmentset,npigmentset) => {
-	/*
-Object.keys(pigmentset).forEach(k=> {
-	console.log(`k=${k}`);
-	console.log(`pigmentdefs[0][0]=${pigmentdefs[0][0]}`);
-	console.log(`npigmentset=${npigmentset}`);
-	console.log(`pigmentset[k].color = ${pigmentset[k].color}`);
-	pigmentset.modasku = pigmentdefs.filter(d=>d[2]===pigmentset[k].color)[0][0];
-	pigmentset.modaname = pigmentdefs.filter(d=>d[2]===pigmentset[k].color)[0][1];
-});
-*/
+
 let quiltset = `a${nalgo.toString().padStart(3,"0")}n${nblocks.toString().padStart(2,"0")}p${npigmentset.toString().padStart(3,"0")}${prefix}${timestampnow}`;
 nextstepsall = nextstepsall + `cd ${quiltset}
-echo start ${quiltset}
 bash nextsteps.sh
-echo finished ${quiltset}
 cd ..
 pwd
 `;
+quiltrun.push({quiltset,nblocks,npigmentset,datetimestr});
 
 let quiltsetinfofile = `${quiltset}/quiltsetinfo.js`;
 let nextstepsfile = `${quiltset}/nextsteps.sh`;
@@ -57,13 +39,22 @@ if (!fs.existsSync(quiltset)){
 	fs.mkdirSync(quiltset);
 }
 
+let quiltsetinfo = { 
+	id: quiltset, datetime: datetimestr, timestamp: timestampnow,
+	pigments: pigments,
+	pigmentset: pigmentset,
+	pigmentdefs: pigmentdefs,
+	pigmenttypes: pigmentypes,
+	nblocks: nblocks,
+	pigmentsquareinfo: {}
+};
 //console.log(`pigmentset = ${JSON.stringify(pigmentset)}`);
 
 let pigmentsets = {
-	p1: tools.reifyWeightedArray([[pigmentset.color1.color,pigmentset.color1.weights[0]],[pigmentset.color2.color,pigmentset.color2.weights[0]],[pigmentset.color3.color,pigmentset.color3.weights[0]],[pigmentset.color4.color,pigmentset.color4.weights[0]]]),
-	p2: tools.reifyWeightedArray([[pigmentset.color1.color,pigmentset.color1.weights[1]],[pigmentset.color2.color,pigmentset.color2.weights[1]],[pigmentset.color3.color,pigmentset.color3.weights[1]],[pigmentset.color4.color,pigmentset.color4.weights[1]]]),
-	p3: tools.reifyWeightedArray([[pigmentset.color1.color,pigmentset.color1.weights[2]],[pigmentset.color2.color,pigmentset.color2.weights[2]],[pigmentset.color3.color,pigmentset.color3.weights[2]],[pigmentset.color4.color,pigmentset.color4.weights[2]]]),
-	p4: tools.reifyWeightedArray([[pigmentset.color1.color,pigmentset.color1.weights[3]],[pigmentset.color2.color,pigmentset.color2.weights[3]],[pigmentset.color3.color,pigmentset.color3.weights[3]],[pigmentset.color4.color,pigmentset.color4.weights[3]]]),
+	p1: tools.reifyWeightedArray([[pigmentset.color1.color,pigmentset.color1.weights[0]],[pigmentset.color2.color,pigmentset.color2.weights[0]],[pigmentset.color3.color,pigmentset.color3.weights[0]], [pigmentset.color4.color,pigmentset.color4.weights[0]]]),
+	p2: tools.reifyWeightedArray([[pigmentset.color1.color,pigmentset.color1.weights[1]],[pigmentset.color2.color,pigmentset.color2.weights[1]],[pigmentset.color3.color,pigmentset.color3.weights[1]]. [pigmentset.color4.color,pigmentset.color4.weights[1]]]),
+	p3: tools.reifyWeightedArray([[pigmentset.color1.color,pigmentset.color1.weights[2]],[pigmentset.color2.color,pigmentset.color2.weights[2]],[pigmentset.color3.color,pigmentset.color3.weights[2]], [pigmentset.color4.color,pigmentset.color4.weights[2]]]),
+	p4: tools.reifyWeightedArray([[pigmentset.color1.color,pigmentset.color1.weights[3]],[pigmentset.color2.color,pigmentset.color2.weights[3]],[pigmentset.color3.color,pigmentset.color3.weights[3]], [pigmentset.color4.color,pigmentset.color4.weights[3]]]),
 }
 let n=parseInt(nblocks);
 console.log(`n=${n}`);
@@ -81,17 +72,6 @@ let p = {
 	nblockcols: n,
 	nblockrows: n,
 	nrows: n, ncols: n
-};
-
-let quiltsetinfo = { 
-	id: quiltset, datetime: datetimestr, timestamp: timestampnow,
-	pigments: pigments,
-	pigmentset: pigmentset,
-	pigmentdefs: pigmentdefs,
-	pigmenttypes: pigmentypes,
-	nblocks: nblocks,
-	p: p,
-	quilts:[] 
 };
 let pigmentcount = Object.keys(pigmentset).reduce( (acc,x,j) => {
 	color = pigmentset[x].color;
@@ -147,10 +127,7 @@ const nrotations = 4;
 		return block = [...Array(p.nrows).keys()].map( r => [...Array(p.ncols).keys()].map( c => blockpigments[r][c]() ) );
 	});
 	console.log(`pigmentcount* = ${JSON.stringify(pigmentcount)}`);
-	//quiltsetinfo.pigmentsquareinfo[nfile] = pigmentcount;
-	quiltsetinfo.quilts.push({
-		nfile, pigmentcount, id:`${quiltset}q${nfile}`, qid:`q${nfile}`,
-	});
+	quiltsetinfo.pigmentsquareinfo[nfile] = pigmentcount;
 	//console.log(`blocks = ${JSON.stringify(blocks)}`);
 	let blocksrotations = blocks.map( b => {
 		let rot1 = b.map( (row,r) => {
@@ -227,6 +204,7 @@ const nrotations = 4;
 		doc.end();
 	});
 	// draw whole quilt doc
+	// quiltsetinfo.pigmentsquareinfo[nfile]
 	doc = new PDFDocument(
 	{ 
 		size: [p.pagewidth, p.pageheight],
@@ -251,17 +229,15 @@ const nrotations = 4;
 		});
 	});
 	doc.end();
-});
+	});
 //console.log(`quiltsetinfo=${JSON.stringify(quiltsetinfo)}`);
 fs.writeFileSync(quiltsetinfofile, `module.exports = ${JSON.stringify(quiltsetinfo, null, '\t')}`, (err) => {
   if (err)
 	console.log(err);
   else {
 	console.log("quiltsetinfo file written successfully\n");
-	}
-});	
-quiltrun.quiltsets.push({ quilts:quiltsetinfo.quilts,quiltset, nblocks, npigmentset, pigmentset});
-
+}
+});
 nextsteps = nextsteps + `
 for file in q*.pdf; do magick convert $file -resize 1920 $file.png; done;
 for file in *pdf.png; do mv "$file" "$\{file/.pdf.png/.png\}"; done;

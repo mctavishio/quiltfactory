@@ -1,0 +1,320 @@
+/*https://www.w3.org/TR/css-page-3/ */
+/*https://www.princexml.com/doc/paged/ */
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+:root {
+  --red: #9a0000;
+  --yellow: #ffcc00;
+  --blue: #006699;
+  --bluegreen: #006969;
+  --black: #000000;
+  --warmblack: #191918;
+  --gray: #484848;
+  --lightgray: #888888;
+  --warmgray: #4b4b44;
+  --warmlightgray: #656560;
+  --white: #ffffff;
+  --warmwhite: #fcfbe3;
+  --richblack: #010203;
+  --richgray1: #2a2a2b;
+  --richgray2: #4f4f50;
+  --richgray3: #777878;
+  --richgray4: #a2a3a3;
+  --richgray5: #d0d0d0;
+  --richgray6: #ffffff;
+  --poetry: 'Crimson Pro', serif;
+  --margin: 1in;
+  --width: 6in;
+  --height: 9in;
+}
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/break-before */
+@page {
+  margin: var(--margin);
+  size: 5.5in 8.5in;
+  size: A5 landscape;
+  size: A5;
+  size: var(--width) var(--height);
+}
+main > header {
+	page: pagebooktitle;
+}
+section#sectionfrontmatter {
+	font-size: 10pt;
+	page: pagenonumbers;
+}
+section.pagenonumbers {
+	page: pagenonumbers;
+}
+section#sectionfrontmatter > article.lowertopmargin {
+	margin-top:30%;
+}
+section#sectionfrontmatter > article.regularmargin {
+	margin-top:0;
+}
+blockquote {
+	margin: 0.25in;
+}
+section#bookinscription {
+	page: pagebookinscription;
+}
+section.pagestartnumbers {
+	page: pagestartnumbers;
+}
+section.pagefrontmatter, main > header, div.blank  {
+	page: pagefrontmatter;
+}
+section > header > h1 {
+	string-set: doctitle content();
+	page: pagefrontmatter;
+}
+section.pagenonumbers {
+	page: pagenonumbers;
+}
+section#sectiontoc {
+	page: pagenonumbers;
+	/*display: none;*/
+}
+#sectiontoc ul li a::after {
+	content: leader('.') target-counter(attr(href), page);
+}
+section.pagestartnumbers {
+	counter-reset: page 1;
+}
+@page blank :left{
+  @bottom-left {
+    content: "";
+  }
+}
+@page blank :right{
+  @bottom-right {
+    content: "";
+  }
+}
+@page pagenonumbers :left{
+  @bottom-left {
+    content: "";
+  }
+}
+@page pagenonumbers :right{
+  @bottom-right {
+    content: "";
+  }
+}
+@page pagewithborderline {
+    border-top: thin black solid;
+    border-bottom: thin black solid;
+}
+@page pagefrontmatter :left{
+	margin-top:30%;
+  @bottom-left {
+    content: "";
+  }
+}
+@page pagefrontmatter :right{
+	margin-top:30%;
+  @bottom-right {
+    content: "";
+  }
+}
+@page pagelowerstart {
+	margin-top: 30%;
+}
+@page pagebooktitle {
+	margin-top: 30%;
+}
+@page pagebooktitle {
+	margin-top: 30%;
+}
+@page pagebookinscription {
+	margin-top: 30%;
+}
+/*
+@page :first {
+	margin: 40% 10%;
+}
+*/
+@page :left {
+  margin-right: 1.2in;
+}
+@page :right {
+  margin-left: 1.2in;
+}
+/*
+@page :right {
+  @top-right {
+    content: string(doctitle);
+    margin: 30pt 0 10pt 0;
+    font-size: 9pt;
+  }
+}
+*/
+@page :right{
+  @bottom-right {
+    content: counter(page);
+	font-weight:400;
+	font-size: 10pt;
+	color: var(--richgray3);
+    margin-bottom: 0.6in;
+  }
+}
+@page :left{
+  @bottom-left {
+    content: counter(page);
+	font-weight:400;
+	font-size: 10pt;
+	color: var(--richgray3);
+    margin-bottom: 0.6in;
+  }
+}
+/*
+@page :blank {
+  @top-center { content: "This page is intentionally left blank." }
+}
+*/
+#afterword, #acknowledgments, #essay, #bio, #notes3rivers, #grantthanks  {
+	text-align: justify;
+	text-align-last: left;
+}
+html {
+	font-size: 11pt;
+	background: #fff;
+	color: var(--richblack);
+}
+body {
+	font: 11pt var(--poetry), Courier, "Times New Roman", Times, serif;
+	line-height: 1.6;
+}
+main > header {
+	text-align: center;
+}
+main > header > h1 {
+	font-size: 2.4em;
+	font-weight: 400;
+	color: var(--richgray1);
+	letter-spacing: 0.015em;
+}
+main > header > h2 {
+	font-size: 1.3em;
+	font-weight: 400;
+	color: var(--richgray1);
+}
+main > header > h3 {
+	margin-top: 8em;
+	font-size: 1.8em;
+	letter-spacing: 0.02em;
+	font-weight: 400;
+	color: var(--richgray1);
+}
+h1 {
+	font-size: 24pt;
+	font-size: 1.4em;
+	letter-spacing: 0.05em;
+	font-weight: 600;
+	color: var(--richgray2);
+	font-variant: small-caps;
+}
+h2, h3, h4 {
+	font-size: 14pt;
+	margin-top: 1mm;
+	color: var(--richgray2);
+	font-size: 1.2em;
+}
+h5 {
+	color: var(--richgray1);
+	font-size: 1.1em;
+}
+section > header > h1 {
+	font-size: 2.2em;
+	font-weight: 500;
+	color: var(--richgray1);
+	letter-spacing: 0.02em;
+}
+article, article header, article header h1 {
+	margin-top:0;
+	padding-top:0;
+}
+article h1 {
+	margin-bottom:0.8em;
+}
+article:has(div.inscription) header h1 {
+	margin-bottom:0.1em;
+}
+article .inscription {
+	margin-top:0em;
+	font-size: 10pt;
+	font-size: 0.9em;
+	margin-left: 3em;
+	color: var(--richgray2);
+}
+#copyright,#publisher {
+	margin-top:8em;
+}
+article {
+  break-before: page;
+}
+section#sectiontoc > div {
+  break-before: recto;
+}
+section > article:first-of-type {
+	break-before: recto;
+}
+main > header {
+	break-before: recto;
+}
+section {
+	break-before: recto;
+}
+section#frontmatter {
+	break-before: verso;
+}
+h1, h2, h3 {
+  break-after: avoid-page;
+}
+article {
+  break-inside: avoid-page;
+}
+div.blank {
+  page: blank;
+}
+.top {
+  display: none;
+}
+a {
+	color: #000;
+	color: var(--richblack);
+	text-decoration: none;
+}
+#sectiontoc ul li {
+	list-style-type: none;
+	font-size: 10pt;
+	color: var(--richblack);
+	font-weight:400;
+	margin:0.1em;
+}
+#sectiontoc ul {
+	margin:0.3em;
+	break-before: avoid-page;
+}
+section#sectiontoc  div.sectionlink {
+	font-size:1.1em;
+	color: var(--richgray1);
+	font-weight:400;
+	margin-top:0.25em;
+	break-after: avoid-page;
+}
+section#sectiontoc  div.sectionlink > a{
+	font-size:1.1em;
+	color: var(--richgray1);
+	font-weight:500;
+}
+article.moreroom  p {
+	margin-bottom: 2.4em;
+}
+img {
+	margin:0.06in;
+	margin-top:0.07in;
+	max-width:20%
+}
+p {
+  orphans: 3;
+  widows: 4;
+}

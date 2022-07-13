@@ -3,6 +3,9 @@ node_modules/
 notes/
 archive/
 keys.js
+a00*/*
+jpg_bella-solids/*
+*.swp
 *.zip
 *.mov
 *.mp4
