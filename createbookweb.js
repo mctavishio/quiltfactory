@@ -26,20 +26,22 @@ const generatefunctions = {
 		sectionstr = sectionstr + `
 		<div class="sectionlink"><a id="link_${section.id}" href="#${section.id}">${section.title}</a></div>`;
 	}
-		/*
+		
 	if(section.poems) {
 		sectionstr = sectionstr + `
 		<ul id="list_${section.id}">`
 		sectionstr = sectionstr + section.poems.reduce( (poemstr,poemid,p) => {
 			console.log(`poemid=${poemid}`);
 			let poem = poems.filter(poem=>poem.id===poemid)[0];
-			poemstr = poemstr + `<li><a id="link_${poem.id}" href="#${poem.id}">${poem.title}</a></li>`;
+			if(poem.hasOwnProperty("cssclasses") && !poem["cssclasses"].includes("notoc") ) {
+				poemstr = poemstr + `<li><a id="link_${poem.id}" href="#${poem.id}">${poem.title}</a></li>`;
+			}
 			return poemstr;
 		}, "");
 		sectionstr = sectionstr + `
 		</ul>`
 	}
-	*/
+	
 	return sectionstr;
 }, "");
 
@@ -181,13 +183,13 @@ html = html + `
 </body>
 </html>`;
 let poemids = poems.map(poem => poem.id); 
-let filename = `${book.file}web.html`;
+let filename = `${book.file}web${timestamp}.html`;
 fs.writeFileSync(filename, html, (err) => {
   if (err)
     console.log(err);
   else {
     console.log(`${filename} written successfully\n`);
-	console.log(`${book.file}ebook.pdf make next`);
+	console.log(`${book.file}ebook${timestamp}.pdf make next`);
   }
 });
-console.log(`prince ${book.file}web.html -o ${book.file}ebook.pdf`);
+console.log(`prince ${book.file}web${timestamp}.html -o ${book.file}ebook${timestamp}.pdf`);

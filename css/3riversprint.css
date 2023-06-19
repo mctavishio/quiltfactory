@@ -50,6 +50,9 @@ section#sectionfrontmatter {
 section.pagenonumbers {
 	page: pagenonumbers;
 }
+section#prelude > article.lowertopmargin {
+	margin-top:30%;
+}
 section#sectionfrontmatter > article.lowertopmargin {
 	margin-top:30%;
 }
@@ -65,7 +68,7 @@ section#bookinscription {
 section.pagestartnumbers {
 	page: pagestartnumbers;
 }
-section.pagefrontmatter, main > header, div.blank  {
+section.pagefrontmatter, main > header, div.blank, section#prelude > article  {
 	page: pagefrontmatter;
 }
 section > header > h1 {
@@ -190,10 +193,10 @@ body {
 	font: 11pt var(--poetry);
 	line-height: 1.4;
 }
-main > header {
+main > header, section#prelude > header {
 	text-align: center;
 }
-main > header > h1 {
+main > header > h1, section#prelude > header > h1 {
 	font-size: 2.5em;
 	font-weight: 400;
 	color: var(--richgray1);
@@ -278,13 +281,13 @@ section#sectiontoc > div {
 section > article:first-of-type {
 	break-before: recto;
 }
-main > header {
+main > header, section#prelude > header {
 	break-before: recto;
 }
 section {
 	break-before: recto;
 }
-section#frontmatter {
+section#frontmatter, section#prelude > article:first-of-type {
 	break-before: verso;
 }
 h1, h2, h3 {
@@ -356,14 +359,6 @@ p.citation {
 	padding-left: 1.5em;
   	text-indent: -1.5em;
   	text-indent: hanging;
-}
-table {
-	margin-top: 3em;
-	margin-bottom: 3em;
-}
-table th {
-	background-color: var(--lightgray);
-	font-weight: 600;
 }
 figure {
 	margin-top: 3em;

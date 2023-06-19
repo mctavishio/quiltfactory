@@ -30,18 +30,9 @@ let quiltrun = {
 let nextstepsallfile = `nextsteps${timestamp}.sh`;
 let nextstepsall = "";
 
-[4,5].forEach( nblocks => {
+[4].forEach( nblocks => {
 pigmentinfo.pigmentsets.forEach( (pigmentset,npigmentset) => {
-	/*
-Object.keys(pigmentset).forEach(k=> {
-	console.log(`k=${k}`);
-	console.log(`pigmentdefs[0][0]=${pigmentdefs[0][0]}`);
-	console.log(`npigmentset=${npigmentset}`);
-	console.log(`pigmentset[k].color = ${pigmentset[k].color}`);
-	pigmentset.modasku = pigmentdefs.filter(d=>d[2]===pigmentset[k].color)[0][0];
-	pigmentset.modaname = pigmentdefs.filter(d=>d[2]===pigmentset[k].color)[0][1];
-});
-*/
+
 let quiltset = `a${nalgo.toString().padStart(3,"0")}n${nblocks.toString().padStart(2,"0")}p${npigmentset.toString().padStart(3,"0")}${prefix}${timestampnow}`;
 nextstepsall = nextstepsall + `cd ${quiltset}
 echo start ${quiltset}
@@ -123,7 +114,7 @@ let blockpigments = [...Array(p.nblocks).keys()].map( r => {
 	return row;
 });
 
-let nextsteps = "";
+let nextsteps = "pdfunite q*.pdf bookwhole.pdf";
 
 let ntrials = 8; 
 let count = 0;
@@ -132,7 +123,8 @@ const nrotations = 4;
 [...Array(ntrials).keys()].forEach( (ntrial) => {
 	let nfile = count.toString().padStart(4, "0");
 	let quiltfile = `${quiltset}/q${nfile}`;
-	nextsteps = nextsteps + `pdfunite q${nfile}*.pdf book${nfile}.pdf
+	nextsteps = nextsteps + `
+pdfunite q${nfile}*.pdf book${nfile}.pdf
 	`;
 	pigmentcount = Object.keys(pigmentset).reduce( (acc,x,j) => {
 		color = pigmentset[x].color;
@@ -235,7 +227,6 @@ const nrotations = 4;
 	});
 	doc.pipe(fs.createWriteStream(quiltfile+"all.pdf"));
 	//doc.rect(0, 0, p.width, p.height).fillColor(pigments.white).fill();
-
 	dx = p.dx;
 	dy = p.dy;
 	[...Array(p.nblockrows).keys()].forEach( nblockrow => {
@@ -249,6 +240,43 @@ const nrotations = 4;
 				});
 			});
 		});
+	});
+	doc.end();
+
+	// draw whole quilt doc with gridlines
+	doc = new PDFDocument(
+	{ 
+		size: [p.pagewidth, p.pageheight],
+		margins: margin,
+		info: info,
+	});
+	doc.pipe(fs.createWriteStream(quiltfile+"allraw.pdf"));
+	//doc.rect(0, 0, p.width, p.height).fillColor(pigments.white).fill();
+	dx = p.dx;
+	dy = p.dy;
+	[...Array(p.nblockrows).keys()].forEach( nblockrow => {
+		[...Array(p.nblockcols).keys()].forEach( nblockcol => {
+			[...Array(p.nrows).keys()].forEach( r => {
+				[...Array(p.ncols).keys()].forEach( c => {
+					let color = blocksrotations[nblockrow][nblockcol][r][c]; 
+					let x = c*dx + nblockcol*p.ncols*dx + p.margin;
+					let y = r*dy + nblockrow*p.nrows*dy + p.margin;  
+					doc.rect(x,y,dx,dy).strokeOpacity(0).fillColor(color).fill();
+				});
+			});
+		});
+	});
+	[...Array(p.nblockcols+1).keys()].filter( c => c>=0 ).forEach( c => {
+		doc.lineWidth(14).strokeOpacity(1).strokeColor(pigments.white);
+		doc.moveTo(c*p.blockdx+p.margin/2,0).lineTo(c*p.blockdx+p.margin/2,p.height).stroke();
+		doc.lineWidth(4).strokeOpacity(1).strokeColor(pigments.gray);
+		doc.moveTo(c*p.blockdx+p.margin/2,0).lineTo(c*p.blockdx+p.margin/2,p.height).stroke();
+	});
+	[...Array(p.nblockrows+1).keys()].filter((r,j,arr) => r>=0 ).forEach( r => {
+		doc.lineWidth(24).strokeOpacity(1).strokeColor(pigments.white);
+		doc.moveTo(0,r*p.blockdy+p.margin/2).lineTo(p.width,r*p.blockdy+p.margin/2).stroke();
+		doc.lineWidth(4).strokeOpacity(1).strokeColor(pigments.black);
+		doc.moveTo(0,r*p.blockdy+p.margin/2).lineTo(p.width,r*p.blockdy+p.margin/2).stroke();
 	});
 	doc.end();
 });

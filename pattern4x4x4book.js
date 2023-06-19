@@ -49,6 +49,7 @@ quiltrun.quiltsets.filter( set => set.nblocks===4).forEach( (set,nset) => {
 	qsec.poems.push(set.quiltset);
 	set.quilts.forEach( q => {
 		qsec.poems.push(q.id);
+		qsec.poems.push(q.id+"raw");
 		qsec.poems.push(q.id+"info");
 		[...Array(set.nblocks).keys()].forEach( bk => {
 			let b=bk.toString().padStart(2, "0");

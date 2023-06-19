@@ -1,4 +1,3 @@
-const quiltrun = require("./quiltrun.js");
 const fs = require("fs");
 module.exports = () => { 
 let poems = [
@@ -7,9 +6,7 @@ id: "frontmatter",
 title: "",
 cssclasses: ["moreroom", "lowertopmargin"],
 text: `<p>
-copyright ©2022 kathy mctavish<br/>
-all rights reserved<br/>
-</p><p>
+2022.07.20
 </p><p class="address">
 <br/>
 mctavish quilting studio & fabrics <br/>
@@ -18,85 +15,24 @@ p.o. box 3280<br/>
 duluth mn 55812
 www.mctavisquilting.com<br/>
 </p><p class="noweb">
-pattern design & code work by kathy mctavish (www.mctavish.io)<br/>
+code work by kathy mctavish (www.mctavish.io)<br/>
 </p><p>
 other work by kathy mctavish: see www.mctavish.io 
 </p>
 `
 },
 {
-id: "generalnotes",
-title: "general notes",
-text: `<p>
-<ul>
-<li>wof = width of fabric</li>
-<li>these instructions assume a usable wof of 40"</li>
-<li>all seams are 1/4"</li>
-<li>yardage calculations are generous to leave room for some cutting error</li>
-<li>yardage estimates are also rounded up to the nearest quarter yard</li>
-</ul>
-</p>
-<p>
-This 4x4x4 quilt pattern is composed of:
-<ul>
-<li>a core set of 4 distinct blocks</li>
-<li>each of these core blocks is made up of a 4x4 grid of squares</li>
-<li>this pattern provides instructions for 3 sizes of cut squares: 3", 4", and 5"</li>
-<li>to construct the final quilt, these 4 distinct blocks are
-replicated 4 times</li>
-<li>the resulting 16 blocks are used to create the final quilt</li>
-<li>each row of the final quilt is made up of quarter-turn rotations of the copies of a given block</li>
-</ul>
-</p>
-<p>To summarize:
-<ul>
-<li>the final quilt has 4 rows and 4 columns of blocks</li>
-<li>each of these blocks is composed of 16 cut squares (in a 4x4 grid)</li>
-<li>there are 4 distinct blocks that are replicated 4 times</li>
-<li>each row of the final quilt is based on a distinct block and its three, quarter-turn rotations</li>
-</ul>
-</p>`
+id: "10percentoffcompqblue",
+title: "10% off computerized quilting",
+text: `<figure>
+<svg>
+<rect x=0 y=0 width="200" height="200" fill="#9a0000"/> 
+<rect x=200 y=0 width="200" height="200" fill="i#ffcc00"/> 
+</svg>
+</figure>`
 },
-{
-id: "quiltdimensions",
-title: "quilt dimensions",
-text: `<p>
-the following calculations are for building block squares of size 3", 4", and 5":
-<ol>
-<li>3"x3" squares
-<ul>
-<li>to include a 1/4" seam allowance: cut squares to 3.5"x3.5"</li>
-<li>finished quilt size: 48"x48"</li>
-<li># squares per wof=40" strip: 11</li>
-<li>finished quilt perimeter: 192"</li>
-<li>for the binding: cut five 2.5" strips</li>
-<li>this translates to about 0.5yd of binding fabric</li>
-</ul>
-</li>
-<li>4"x4" squares
-<ul>
-<li>to include a 1/4" seam allowance: cut squares to 4.5"x4.5"</li>
-<li>finished quilt size: 64"x64"</li>
-<li># squares per wof=40" strip: 8</li>
-<li>finished quilt perimeter: 256"</li>
-<li>for the binding: cut seven 2.5" strips</li>
-<li>this translates to about 0.75yd of binding fabric</li>
-</ul>
-</li>
-<li>5"x5" squares
-<ul>
-<li>to include a 1/4" seam allowance: cut squares to 5.5"x5.5"</li>
-<li>finished quilt size: 80"x80"</li>
-<li># squares per wof=40" strip: 7</li>
-<li>finished quilt perimeter: 320"</li>
-<li>for the binding: cut eight 2.5" strips</li>
-<li>this translates to about 0.75yd of binding fabric</li>
-</ul>
-</li>
-</ol>
-</p>`,
-}
 ];
+/*
 quiltrun.quiltsets.forEach( set => {
 	console.log(set.quiltset);
 	console.log("set.pigmentset= "+JSON.stringify(set.pigmentset));
@@ -161,11 +97,6 @@ quiltrun.quiltsets.forEach( set => {
 		<li>5" squares: yds: ${p.yd5r}</li>
 	</ul>
 </p>`
-		/*
-		<li>3" squares: #fabric strips (wof=40): ${p.nrows3}</li>
-		<li>4" squares: #fabric strips (wof=40): ${p.nrows4}</li>
-		<li>5" squares: #fabric strips (wof=40): ${p.nrows5}</li>
-		*/
 		return acc;		
 		}, "");
 		poems.push(
@@ -227,7 +158,8 @@ quiltrun.quiltsets.forEach( set => {
 		});
 	});
 });
-fs.writeFileSync("poemstest.js", JSON.stringify(poems,null,'\t'), (err) => {
+*/
+fs.writeFileSync("couponstest.js", JSON.stringify(poems,null,'\t'), (err) => {
   if (err)
 	console.log(err);
   else {

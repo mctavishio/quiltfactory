@@ -34,6 +34,7 @@ text: `<p>
 <li>these instructions assume a usable wof of 40"</li>
 <li>all seams are 1/4"</li>
 <li>yardage calculations are generous to leave room for some cutting error</li>
+<li>yardage estimates are also rounded up to the nearest quarter yard</li>
 </ul>
 </p>
 <p>
@@ -53,7 +54,7 @@ replicated 5 times</li>
 <li>the final quilt has 5 rows and 5 columns of blocks</li>
 <li>each of these blocks is composed of 25 cut squares (in a 5x5 grid)</li>
 <li>there are 5 distinct blocks that are replicated 5 times</li>
-<li>each row of the final quilt is based on a distinct block and rotation of its replicas</li>
+<li>each row of the final quilt is based on a distinct block and its four, quarter-turn rotations</li>
 </ul>
 </p>`
 },
@@ -68,8 +69,9 @@ the following calculations are for building block squares of size 3" and 4":
 <li>to include a 1/4" seam allowance: cut squares to 3.5"x3.5"</li>
 <li>finished quilt size: 75"x75"</li>
 <li># squares per wof=40" strip: 11</li>
-<li>finished perimeter: 300" : cut 8, 2.5" strips</li>
-<li>recommended: purchase 0.75yd of binding fabric</li>
+<li>finished quilt perimeter: 300"</li>
+<li>for the binding: cut eight 2.5" strips</li>
+<li>this translates to about 0.75yd of binding fabric</li>
 </ul>
 </li>
 <li>4"x4" squares
@@ -79,6 +81,7 @@ the following calculations are for building block squares of size 3" and 4":
 <li># squares per wof=40" strip: 8</li>
 <li>finished perimeter: 400": cut 11, 2.5" strips</li>
 <li>recommended: purchase 1.0yd of binding fabric</li>
+<li>this translates to about 1.0yd of binding fabric</li>
 </ul>
 </li>
 </ol>
@@ -118,7 +121,6 @@ quiltrun.quiltsets.forEach( set => {
 	{
 	id: set.quiltset,
 	title: "quilt set information",
-	cssclasses: ["notoc"],
 	text: text,
 	});
 	set.quilts.forEach( q => {
@@ -163,9 +165,21 @@ quiltrun.quiltsets.forEach( set => {
 			`,
 		});
 		poems.push(
+			{
+			id: q.id+"raw",
+			title: `quilt ${q.id}: block rows marked`,
+			cssclasses: ["notoc"],
+			text: `
+			<figure>
+				<img src="${set.quiltset}/${q.qid}allraw.png"/>
+			</figure>
+			`,
+		});
+		poems.push(
 		{
 			id: q.id+"info",
 			title: `quilt ${q.id} measurements`,
+			cssclasses: ["notoc"],
 			text: pigmenttext,
 		});
 		[...Array(set.nblocks).keys()].forEach( bk => {
